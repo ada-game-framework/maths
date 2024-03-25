@@ -1,3 +1,6 @@
+------------------------------------------------------------------------------------------------------------------------
+--  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
+------------------------------------------------------------------------------------------------------------------------
 package body Maths.Vectors_4 is
    function "+" (Left, Right : Vector) return Vector is
    begin

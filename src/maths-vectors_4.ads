@@ -1,3 +1,8 @@
+------------------------------------------------------------------------------------------------------------------------
+--  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
+------------------------------------------------------------------------------------------------------------------------
+--  Maths.Vectors_4
+------------------------------------------------------------------------------------------------------------------------
 with GNAT.SSE.Vector_Types;  --  TODO: Create local versions for portability.
 
 package Maths.Vectors_4 is

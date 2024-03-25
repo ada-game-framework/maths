@@ -1,3 +1,8 @@
+------------------------------------------------------------------------------------------------------------------------
+--  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
+------------------------------------------------------------------------------------------------------------------------
+--  Maths.Matrices_4x4
+------------------------------------------------------------------------------------------------------------------------
 with GNAT.SSE.Vector_Types;  --  TODO: Create local versions for portability.
 with Maths.Vectors_4;
 
@@ -15,6 +20,7 @@ package Maths.Matrices_4x4 is
    --  Y   |   M1 M5 M9  M13 :-> M21 M22 M23 M24 :-> y y y | y
    --  Z   |   M2 M6 M10 M14     M31 M32 M33 M34     z z z | z
    --  W   |   M3 M7 M11 M15     M41 M42 M43 M44     0 0 0 | 1
+
    type Matrix_Elements is (X_Axis_X, X_Axis_Y, X_Axis_Z, X_Axis_W,
                             Y_Axis_X, Y_Axis_Y, Y_Axis_Z, Y_Axis_W,
                             Z_Axis_X, Z_Axis_Y, Z_Axis_Z, Z_Axis_W,

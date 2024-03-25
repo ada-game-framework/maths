@@ -1,3 +1,6 @@
+------------------------------------------------------------------------------------------------------------------------
+--  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
+------------------------------------------------------------------------------------------------------------------------
 package body Maths.Matrices_4x4 is
    use type Vectors_4.Vector;
 
