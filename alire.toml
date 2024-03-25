@@ -8,3 +8,11 @@ maintainers-logins = ["Lucretia"]
 licenses = "BSD-3-Clause"
 website = ""
 tags = ["maths", "simd", "matrices", "vectors"]
+
+[gpr-set-externals.'case(host-arch)']
+  I686    = { MATHS_CPU = "X86" }
+  x86-64  = { MATHS_CPU = "X86_64" }
+  aarch64 = { MATHS_CPU = "AARCH64" }
+#   linux   = { SDL_PLATFORM = "linux" }
+#   windows = { SDL_PLATFORM = "windows" }
+#   macos   = { SDL_PLATFORM = "macosx" }

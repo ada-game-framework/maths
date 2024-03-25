@@ -1,6 +1,22 @@
 with "config/maths_config.gpr";
 
 project Maths is
+   type CPU_Type is ("X86", "X86_64", "AARCH64");
+   -- type Platform_Type is ("linux", "bsd", "windows", "macosx", "macos_homebrew", "macos_ports", "ios", "android");
+
+   CPU      : CPU_Type      := external ("MATHS_CPU", "X86_64");
+   -- Platform : Platform_Type := external ("MATHS_PLATFORM", "linux");
+
+   -- Source_Platform_Linker := "";
+
+   -- case Platform is
+   --    when "macosx" =>
+   --       Source_Platform_Linker := "src/link/macosx";
+
+   --    when others =>
+   --       Source_Platform_Linker := "src/link/nix";
+   -- end case;
+
    for Library_Name use "Maths";
    for Library_Version use Project'Library_Name & ".so." & Maths_Config.Crate_Version;
 
@@ -15,9 +31,21 @@ project Maths is
 
    for Library_Kind use Library_Type;
 
+   Maths_Options := ();
+
+   case CPU is
+      when "X86" | "X86_64" =>
+         Maths_Options := ("-mavx", "-msse");
+
+      when others =>
+         null;
+      -- when "AARCH64" =>
+      --    Maths_Config := "-n"
+   end case;
+
    package Compiler is
-      for Default_Switches ("Ada") use Maths_Config.Ada_Compiler_Switches &
-        ("-gnat2022", "-gnatyM120", "-gnata", "-mavx");
+      for Default_Switches ("Ada") use Maths_Config.Ada_Compiler_Switches & Maths_Options &
+        ("-gnat2022", "-gnatyM120", "-gnata");
    end Compiler;
 
    package Binder is
