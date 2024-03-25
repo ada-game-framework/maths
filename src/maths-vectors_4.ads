@@ -15,7 +15,7 @@ package Maths.Vectors_4 is
    type Vector (Which : Vector_Access_Type) is record
       case Which is
          when SIMD =>
-            Register : SIMDV.m128;
+            Register : SIMDV.m128;   --  The machine representation.
 
          when Components =>
             Elements : Float_Vector;

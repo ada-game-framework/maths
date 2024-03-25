@@ -22,8 +22,8 @@ package Maths.Matrices_4x4 is
    type Basis_Axes is (X, Y, Z, T);
    type Axes is (X, Y, Z, W);
 
+   type M128_Array is array (Basis_Axes) of SIMDV.m128;  --  The machine representation.
    type Float_Array is array (Matrix_Elements) of Float;
-   type M128_Array is array (Basis_Axes) of SIMDV.m128;
    type Vector_Array is array (Axes) of Vectors_4.Vector (Vectors_4.Components);
 
    type Matrix_2D_Array is array (Axes, Basis_Axes) of Float with
@@ -48,4 +48,7 @@ package Maths.Matrices_4x4 is
    end record with
      Convention => C,
      Unchecked_Union;
+
+
+   function "+" (Left, Right : Matrix) return Matrix;
 end Maths.Matrices_4x4;
