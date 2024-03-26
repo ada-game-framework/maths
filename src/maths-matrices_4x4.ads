@@ -55,10 +55,19 @@ package Maths.Matrices_4x4 is
      Convention => C,
      Unchecked_Union;
 
+   Identity : constant Matrix;
+
    --  Operators.
    function "+" (Left, Right : Matrix) return Matrix with
      Inline;
 
    function "*" (Left : Matrix; Right : Vectors_4.Vector) return Vectors_4.Vector with
      Inline;
+private
+   Identity : constant Matrix :=
+     (Which       => Matrix_2D,
+      Elements_2D => ((1.0, 0.0, 0.0, 0.0),
+                      (0.0, 1.0, 0.0, 0.0),
+                      (0.0, 0.0, 1.0, 0.0),
+                      (0.0, 0.0, 0.0, 1.0)));
 end Maths.Matrices_4x4;
