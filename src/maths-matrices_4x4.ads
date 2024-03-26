@@ -55,6 +55,10 @@ package Maths.Matrices_4x4 is
      Convention => C,
      Unchecked_Union;
 
+   --  Operators.
+   function "+" (Left, Right : Matrix) return Matrix with
+     Inline;
 
-   function "+" (Left, Right : Matrix) return Matrix;
+   function "*" (Left : Matrix; Right : Vectors_4.Vector) return Vectors_4.Vector with
+     Inline;
 end Maths.Matrices_4x4;

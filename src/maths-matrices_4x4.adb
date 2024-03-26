@@ -37,4 +37,46 @@ package body Maths.Matrices_4x4 is
          M.Axes (W) := Left.Axes (W) + Right.Axes (W);
       end return;
    end "+";
+
+
+   function "*" (Left : Matrix; Right : Vectors_4.Vector) return Vectors_4.Vector is
+   begin
+      return V : Vectors_4.Vector (Vectors_4.SIMD) do
+         --  V.Elements (Vectors_4.X) := Left.Elements (X_Axis_X) * Right.Elements (Vectors_4.X) +
+         --                              Left.Elements (X_Axis_Y) * Right.Elements (Vectors_4.Y) +
+         --                              Left.Elements (X_Axis_Z) * Right.Elements (Vectors_4.Z) +
+         --                              Left.Elements (X_Axis_W) * Right.Elements (Vectors_4.W);
+         --  V.Elements (Vectors_4.Y) := Left.Elements (Y_Axis_X) * Right.Elements (Vectors_4.X) +
+         --                              Left.Elements (Y_Axis_Y) * Right.Elements (Vectors_4.Y) +
+         --                              Left.Elements (Y_Axis_Z) * Right.Elements (Vectors_4.Z) +
+         --                              Left.Elements (Y_Axis_W) * Right.Elements (Vectors_4.W);
+         --  V.Elements (Vectors_4.Z) := Left.Elements (Z_Axis_X) * Right.Elements (Vectors_4.X) +
+         --                              Left.Elements (Z_Axis_Y) * Right.Elements (Vectors_4.Y) +
+         --                              Left.Elements (Z_Axis_Z) * Right.Elements (Vectors_4.Z) +
+         --                              Left.Elements (Z_Axis_W) * Right.Elements (Vectors_4.W);
+         --  V.Elements (Vectors_4.W) := Left.Elements (W_Axis_X) * Right.Elements (Vectors_4.X) +
+         --                              Left.Elements (W_Axis_Y) * Right.Elements (Vectors_4.Y) +
+         --                              Left.Elements (W_Axis_Z) * Right.Elements (Vectors_4.Z) +
+         --                              Left.Elements (W_Axis_W) * Right.Elements (Vectors_4.W);
+         V.Elements := (Left.Elements (X_Axis_X) * Right.Elements (Vectors_4.X) +
+                        Left.Elements (X_Axis_Y) * Right.Elements (Vectors_4.Y) +
+                        Left.Elements (X_Axis_Z) * Right.Elements (Vectors_4.Z) +
+                        Left.Elements (X_Axis_W) * Right.Elements (Vectors_4.W),
+
+                        Left.Elements (Y_Axis_X) * Right.Elements (Vectors_4.X) +
+                        Left.Elements (Y_Axis_Y) * Right.Elements (Vectors_4.Y) +
+                        Left.Elements (Y_Axis_Z) * Right.Elements (Vectors_4.Z) +
+                        Left.Elements (Y_Axis_W) * Right.Elements (Vectors_4.W),
+
+                        Left.Elements (Z_Axis_X) * Right.Elements (Vectors_4.X) +
+                        Left.Elements (Z_Axis_Y) * Right.Elements (Vectors_4.Y) +
+                        Left.Elements (Z_Axis_Z) * Right.Elements (Vectors_4.Z) +
+                        Left.Elements (Z_Axis_W) * Right.Elements (Vectors_4.W),
+
+                        Left.Elements (W_Axis_X) * Right.Elements (Vectors_4.X) +
+                        Left.Elements (W_Axis_Y) * Right.Elements (Vectors_4.Y) +
+                        Left.Elements (W_Axis_Z) * Right.Elements (Vectors_4.Z) +
+                        Left.Elements (W_Axis_W) * Right.Elements (Vectors_4.W));
+      end return;
+   end "*";
 end Maths.Matrices_4x4;
