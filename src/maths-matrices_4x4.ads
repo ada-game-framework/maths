@@ -24,7 +24,7 @@ package Maths.Matrices_4x4 is
    type Matrix_Elements is (X_Axis_X, X_Axis_Y, X_Axis_Z, X_Axis_W,
                             Y_Axis_X, Y_Axis_Y, Y_Axis_Z, Y_Axis_W,
                             Z_Axis_X, Z_Axis_Y, Z_Axis_Z, Z_Axis_W,
-                            W_Axis_X, W_Axis_Y, W_Axis_Z, W_Axis_W);
+                            Translation_X, Translation_Y, Translation_Z, Translation_W);
    type Basis_Axes is (X, Y, Z, T);
    type Axes is (X, Y, Z, W);
 

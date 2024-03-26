@@ -73,10 +73,10 @@ package body Maths.Matrices_4x4 is
                         Left.Elements (Z_Axis_Z) * Right.Elements (Vectors_4.Z) +
                         Left.Elements (Z_Axis_W) * Right.Elements (Vectors_4.W),
 
-                        Left.Elements (W_Axis_X) * Right.Elements (Vectors_4.X) +
-                        Left.Elements (W_Axis_Y) * Right.Elements (Vectors_4.Y) +
-                        Left.Elements (W_Axis_Z) * Right.Elements (Vectors_4.Z) +
-                        Left.Elements (W_Axis_W) * Right.Elements (Vectors_4.W));
+                        Left.Elements (Translation_X) * Right.Elements (Vectors_4.X) +
+                        Left.Elements (Translation_Y) * Right.Elements (Vectors_4.Y) +
+                        Left.Elements (Translation_Z) * Right.Elements (Vectors_4.Z) +
+                        Left.Elements (Translation_W) * Right.Elements (Vectors_4.W));
       end return;
    end "*";
 end Maths.Matrices_4x4;
