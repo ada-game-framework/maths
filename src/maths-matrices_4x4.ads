@@ -61,6 +61,9 @@ package Maths.Matrices_4x4 is
    function "+" (Left, Right : Matrix) return Matrix with
      Inline;
 
+   function "-" (Left, Right : Matrix) return Matrix with
+     Inline;
+
    function "*" (Left : Matrix; Right : Vectors_4.Vector) return Vectors_4.Vector with
      Inline;
 

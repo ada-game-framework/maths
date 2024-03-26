@@ -39,6 +39,17 @@ package body Maths.Matrices_4x4 is
    end "+";
 
 
+   function "-" (Left, Right : Matrix) return Matrix is
+   begin
+      return M : Matrix (Vectors) do
+         M.Axes (X) := Left.Axes (X) - Right.Axes (X);
+         M.Axes (Y) := Left.Axes (Y) - Right.Axes (Y);
+         M.Axes (Z) := Left.Axes (Z) - Right.Axes (Z);
+         M.Axes (W) := Left.Axes (W) - Right.Axes (W);
+      end return;
+   end "-";
+
+
    function "*" (Left : Matrix; Right : Vectors_4.Vector) return Vectors_4.Vector is
    begin
       return V : Vectors_4.Vector (Vectors_4.SIMD) do

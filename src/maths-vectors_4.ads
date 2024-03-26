@@ -36,6 +36,9 @@ package Maths.Vectors_4 is
    function "+" (Left, Right : Vector) return Vector with
      Inline;
 
+   function "-" (Left, Right : Vector) return Vector with
+     Inline;
+
    function "*" (Left : Vector; Scalar : Float) return Vector with
      Inline;
 end Maths.Vectors_4;
