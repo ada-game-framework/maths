@@ -79,4 +79,14 @@ package body Maths.Matrices_4x4 is
                         Left.Elements (Translation_W) * Right.Elements (Vectors_4.W));
       end return;
    end "*";
+
+
+   function Translation (X, Y, Z : Float) return Matrix is
+   begin
+      return M : Matrix (Which => Components) do
+         M.Elements := (Translation_X => X, Translation_Y => Y, Translation_Z => Z,
+                        X_Axis_X | Y_Axis_Y | Z_Axis_Z => 1.0,
+                        others => 0.0);
+      end return;
+   end Translation;
 end Maths.Matrices_4x4;

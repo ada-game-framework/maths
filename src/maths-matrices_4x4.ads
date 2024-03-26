@@ -63,6 +63,8 @@ package Maths.Matrices_4x4 is
 
    function "*" (Left : Matrix; Right : Vectors_4.Vector) return Vectors_4.Vector with
      Inline;
+
+   function Translation (X, Y, Z : Float) return Matrix;
 private
    Identity : constant Matrix :=
      (Which       => Matrix_2D,
