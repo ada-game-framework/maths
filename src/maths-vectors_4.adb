@@ -47,4 +47,17 @@ package body Maths.Vectors_4 is
                         (V.Elements (Z) * V.Elements (Z)) +
                         (V.Elements (W) * V.Elements (W)));
    end Length;
+
+
+   --              V
+   --  Norm(V) = -----
+   --            ||V||
+   procedure Normalise (V : in out Vector) is
+      L : constant Float := Length (V);
+   begin
+      V.Elements :=  (X => V.Elements (X) / L,
+                      Y => V.Elements (Y) / L,
+                      Z => V.Elements (Z) / L,
+                      W => V.Elements (W) / L);
+   end Normalise;
 end Maths.Vectors_4;

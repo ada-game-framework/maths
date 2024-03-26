@@ -44,4 +44,7 @@ package Maths.Vectors_4 is
 
    function Length (V : Vector) return Float with
      Inline;
+
+   procedure Normalise (V : in out Vector) with
+     Inline;
 end Maths.Vectors_4;
