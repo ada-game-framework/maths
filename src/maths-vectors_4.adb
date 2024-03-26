@@ -1,7 +1,11 @@
 ------------------------------------------------------------------------------------------------------------------------
 --  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
 ------------------------------------------------------------------------------------------------------------------------
+with Ada.Numerics.Generic_Elementary_Functions;
+
 package body Maths.Vectors_4 is
+   package Trig is new Ada.Numerics.Generic_Elementary_Functions (Float);
+
    function "+" (Left, Right : Vector) return Vector is
    begin
       return V : Vector (Components) do
@@ -33,4 +37,14 @@ package body Maths.Vectors_4 is
          V.Elements (W) := Left.Elements (W) * Scalar;
       end return;
    end "*";
+
+
+   --  ||V|| = Sqrt(V.V)
+   function Length (V : Vector) return Float is
+   begin
+      return Trig.Sqrt ((V.Elements (X) * V.Elements (X)) +
+                        (V.Elements (Y) * V.Elements (Y)) +
+                        (V.Elements (Z) * V.Elements (Z)) +
+                        (V.Elements (W) * V.Elements (W)));
+   end Length;
 end Maths.Vectors_4;

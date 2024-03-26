@@ -41,4 +41,7 @@ package Maths.Vectors_4 is
 
    function "*" (Left : Vector; Scalar : Float) return Vector with
      Inline;
+
+   function Length (V : Vector) return Float with
+     Inline;
 end Maths.Vectors_4;

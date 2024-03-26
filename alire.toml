@@ -1,6 +1,6 @@
 name = "maths"
 description = "SIMD Maths for Ada."
-version = "0.0.12"
+version = "0.0.13"
 
 authors = ["Luke A. Guest"]
 maintainers = ["Luke A. Guest <laguest@archeia.com>"]
