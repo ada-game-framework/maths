@@ -35,7 +35,7 @@ project Maths is
 
    case CPU is
       when "X86" | "X86_64" =>
-         Maths_Options := ("-mavx", "-msse");
+         Maths_Options := ("-mavx", "-msse4.1");
 
       when others =>
          null;
@@ -45,7 +45,7 @@ project Maths is
 
    package Compiler is
       for Default_Switches ("Ada") use Maths_Config.Ada_Compiler_Switches & Maths_Options &
-        ("-gnat2022", "-gnatyM120", "-gnata");
+        ("-gnat2022", "-gnatyM120", "-gnata", "-gnaty-u", "-gnatwJ");
    end Compiler;
 
    package Binder is
