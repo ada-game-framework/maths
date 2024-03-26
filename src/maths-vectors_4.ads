@@ -32,5 +32,9 @@ package Maths.Vectors_4 is
      Convention => C,
      Unchecked_Union;
 
-   function "+" (Left, Right : Vector) return Vector;
+   function "+" (Left, Right : Vector) return Vector with
+     Inline;
+
+   function "*" (Left : Vector; Scalar : Float) return Vector with
+     Inline;
 end Maths.Vectors_4;

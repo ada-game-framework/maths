@@ -11,4 +11,15 @@ package body Maths.Vectors_4 is
          V.Elements (W) := Left.Elements (W) + Right.Elements (W);
       end return;
    end "+";
+
+
+   function "*" (Left : Vector; Scalar : Float) return Vector is
+   begin
+      return V : Vector (Components) do
+         V.Elements (X) := Left.Elements (X) * Scalar;
+         V.Elements (Y) := Left.Elements (Y) * Scalar;
+         V.Elements (Z) := Left.Elements (Z) * Scalar;
+         V.Elements (W) := Left.Elements (W) * Scalar;
+      end return;
+   end "*";
 end Maths.Vectors_4;
