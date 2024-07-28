@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------------------------------------------------------
 --  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
 ------------------------------------------------------------------------------------------------------------------------
---  Maths.Matrices_4x4
+--  Maths.Matrix4s
 ------------------------------------------------------------------------------------------------------------------------
 with GNAT.SSE.Vector_Types;  --  TODO: Create local versions for portability.
 with Maths.Vector4s;
 
-package Maths.Matrices_4x4 is
+package Maths.Matrix4s is
    --  pragma Pure;
 
    package SIMDV renames GNAT.SSE.Vector_Types;
@@ -37,7 +37,7 @@ package Maths.Matrices_4x4 is
 
    type Matrix_Access_Type is (SIMD, Components, Matrix_2D, Vectors);
 
-   type Matrix (Which : Matrix_Access_Type) is record
+   type Matrix4 (Which : Matrix_Access_Type) is record
       case Which is
          when SIMD =>
             Registers : M128_Array;
@@ -55,24 +55,24 @@ package Maths.Matrices_4x4 is
      Convention => C,
      Unchecked_Union;
 
-   Identity : constant Matrix;
+   Identity : constant Matrix4;
 
    --  Operators.
-   function "+" (Left, Right : Matrix) return Matrix with
+   function "+" (Left, Right : Matrix4) return Matrix4 with
      Inline;
 
-   function "-" (Left, Right : Matrix) return Matrix with
+   function "-" (Left, Right : Matrix4) return Matrix4 with
      Inline;
 
-   function "*" (Left : Matrix; Right : Vector4s.Vector4) return Vector4s.Vector4 with
+   function "*" (Left : Matrix4; Right : Vector4s.Vector4) return Vector4s.Vector4 with
      Inline;
 
-   function Translation (X, Y, Z : Float) return Matrix;
+   function Translation (X, Y, Z : Float) return Matrix4;
 private
-   Identity : constant Matrix :=
+   Identity : constant Matrix4 :=
      (Which       => Matrix_2D,
       Elements_2D => ((1.0, 0.0, 0.0, 0.0),
                       (0.0, 1.0, 0.0, 0.0),
                       (0.0, 0.0, 1.0, 0.0),
                       (0.0, 0.0, 0.0, 1.0)));
-end Maths.Matrices_4x4;
+end Maths.Matrix4s;

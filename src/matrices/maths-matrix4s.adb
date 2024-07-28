@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------------------------------------------------------
 --  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
 ------------------------------------------------------------------------------------------------------------------------
-package body Maths.Matrices_4x4 is
+package body Maths.Matrix4s is
    use type Vector4s.Vector4;
 
-   function "+" (Left, Right : Matrix) return Matrix is
+   function "+" (Left, Right : Matrix4) return Matrix4 is
    begin
-      return M : Matrix (Vectors) do
+      return M : Matrix4 (Vectors) do
          M.Axes (X) := Left.Axes (X) + Right.Axes (X);
          M.Axes (Y) := Left.Axes (Y) + Right.Axes (Y);
          M.Axes (Z) := Left.Axes (Z) + Right.Axes (Z);
@@ -15,9 +15,9 @@ package body Maths.Matrices_4x4 is
    end "+";
 
 
-   function "-" (Left, Right : Matrix) return Matrix is
+   function "-" (Left, Right : Matrix4) return Matrix4 is
    begin
-      return M : Matrix (Vectors) do
+      return M : Matrix4 (Vectors) do
          M.Axes (X) := Left.Axes (X) - Right.Axes (X);
          M.Axes (Y) := Left.Axes (Y) - Right.Axes (Y);
          M.Axes (Z) := Left.Axes (Z) - Right.Axes (Z);
@@ -26,7 +26,7 @@ package body Maths.Matrices_4x4 is
    end "-";
 
 
-   function "*" (Left : Matrix; Right : Vector4s.Vector4) return Vector4s.Vector4 is
+   function "*" (Left : Matrix4; Right : Vector4s.Vector4) return Vector4s.Vector4 is
    begin
       return V : Vector4s.Vector4 (Vector4s.SIMD) do
          V.Elements := (Left.Elements (X_Axis_X) * Right.Elements (Vector4s.X) +
@@ -52,12 +52,12 @@ package body Maths.Matrices_4x4 is
    end "*";
 
 
-   function Translation (X, Y, Z : Float) return Matrix is
+   function Translation (X, Y, Z : Float) return Matrix4 is
    begin
-      return M : Matrix (Which => Components) do
+      return M : Matrix4 (Which => Components) do
          M.Elements := (Translation_X => X, Translation_Y => Y, Translation_Z => Z,
                         X_Axis_X | Y_Axis_Y | Z_Axis_Z => 1.0,
                         others => 0.0);
       end return;
    end Translation;
-end Maths.Matrices_4x4;
+end Maths.Matrix4s;
