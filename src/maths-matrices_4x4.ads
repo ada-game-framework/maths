@@ -4,7 +4,7 @@
 --  Maths.Matrices_4x4
 ------------------------------------------------------------------------------------------------------------------------
 with GNAT.SSE.Vector_Types;  --  TODO: Create local versions for portability.
-with Maths.Vectors_4;
+with Maths.Vector4s;
 
 package Maths.Matrices_4x4 is
    --  pragma Pure;
@@ -30,7 +30,7 @@ package Maths.Matrices_4x4 is
 
    type M128_Array is array (Basis_Axes) of SIMDV.m128;  --  The machine representation.
    type Float_Array is array (Matrix_Elements) of Float;
-   type Vector_Array is array (Axes) of Vectors_4.Vector (Vectors_4.Components);
+   type Vector_Array is array (Axes) of Vector4s.Vector4 (Vector4s.Components);
 
    type Matrix_2D_Array is array (Axes, Basis_Axes) of Float with
      Convention => Fortran;
@@ -64,7 +64,7 @@ package Maths.Matrices_4x4 is
    function "-" (Left, Right : Matrix) return Matrix with
      Inline;
 
-   function "*" (Left : Matrix; Right : Vectors_4.Vector) return Vectors_4.Vector with
+   function "*" (Left : Matrix; Right : Vector4s.Vector4) return Vector4s.Vector4 with
      Inline;
 
    function Translation (X, Y, Z : Float) return Matrix;
