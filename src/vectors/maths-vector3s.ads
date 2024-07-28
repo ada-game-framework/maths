@@ -8,7 +8,7 @@
 package Maths.Vector3s is
    --  pragma Preelaborable_Initialization;
 
-  --   package SIMDV renames GNAT.SSE.Vector_Types;
+   --   package SIMDV renames GNAT.SSE.Vector_Types;
 
    type Axes3D is (X, Y, Z);
 
