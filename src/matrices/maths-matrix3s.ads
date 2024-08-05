@@ -35,7 +35,7 @@ package Maths.Matrix3s is
    type Float_Array is array (Matrix_Elements) of Float;
    type Vector_Array is array (Axes) of Vector3s.Vector3 (Vector3s.Components);
 
-   type Matrix_2D_Array is array (Axes, Basis_Axes) of Float with
+   type Matrix_2D_Array is array (Basis_Axes, Axes) of Float with
      Convention => Fortran;
 
    type Matrix_Access_Type is (SIMD, Components, Matrix_2D, Vectors);
