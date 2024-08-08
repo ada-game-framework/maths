@@ -27,17 +27,17 @@ package body Maths.Matrix3s is
    function "*" (Left : Matrix3; Right : Vector3s.Vector3) return Vector3s.Vector3 is
    begin
       return V : Vector3s.Vector3 (Vector3s.Components) do
-         V.Elements := (Left.Elements (X_Axis_X) * Right.Elements (Vector3s.X) +
-                        Left.Elements (X_Axis_Y) * Right.Elements (Vector3s.Y) +
-                        Left.Elements (X_Axis_Z) * Right.Elements (Vector3s.Z),
+         V.Elements := (Vector3s.X => Left.Elements (X_Axis_X) * Right.Elements (Vector3s.X) +
+                                      Left.Elements (X_Axis_Y) * Right.Elements (Vector3s.Y) +
+                                      Left.Elements (X_Axis_Z) * Right.Elements (Vector3s.Z),
 
-                        Left.Elements (Y_Axis_X) * Right.Elements (Vector3s.X) +
-                        Left.Elements (Y_Axis_Y) * Right.Elements (Vector3s.Y) +
-                        Left.Elements (Y_Axis_Z) * Right.Elements (Vector3s.Z),
+                        Vector3s.Y => Left.Elements (Y_Axis_X) * Right.Elements (Vector3s.X) +
+                                      Left.Elements (Y_Axis_Y) * Right.Elements (Vector3s.Y) +
+                                      Left.Elements (Y_Axis_Z) * Right.Elements (Vector3s.Z),
 
-                        Left.Elements (Z_Axis_X) * Right.Elements (Vector3s.X) +
-                        Left.Elements (Z_Axis_Y) * Right.Elements (Vector3s.Y) +
-                        Left.Elements (Z_Axis_Z) * Right.Elements (Vector3s.Z));
+                        Vector3s.Z => Left.Elements (Z_Axis_X) * Right.Elements (Vector3s.X) +
+                                      Left.Elements (Z_Axis_Y) * Right.Elements (Vector3s.Y) +
+                                      Left.Elements (Z_Axis_Z) * Right.Elements (Vector3s.Z));
       end return;
    end "*";
 

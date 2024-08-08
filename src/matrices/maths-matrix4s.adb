@@ -10,7 +10,7 @@ package body Maths.Matrix4s is
          M.Axes (X) := Left.Axes (X) + Right.Axes (X);
          M.Axes (Y) := Left.Axes (Y) + Right.Axes (Y);
          M.Axes (Z) := Left.Axes (Z) + Right.Axes (Z);
-         M.Axes (W) := Left.Axes (W) + Right.Axes (W);
+         M.Axes (T) := Left.Axes (T) + Right.Axes (T);
       end return;
    end "+";
 
@@ -21,7 +21,7 @@ package body Maths.Matrix4s is
          M.Axes (X) := Left.Axes (X) - Right.Axes (X);
          M.Axes (Y) := Left.Axes (Y) - Right.Axes (Y);
          M.Axes (Z) := Left.Axes (Z) - Right.Axes (Z);
-         M.Axes (W) := Left.Axes (W) - Right.Axes (W);
+         M.Axes (T) := Left.Axes (T) - Right.Axes (T);
       end return;
    end "-";
 
@@ -29,25 +29,25 @@ package body Maths.Matrix4s is
    function "*" (Left : Matrix4; Right : Vector4s.Vector4) return Vector4s.Vector4 is
    begin
       return V : Vector4s.Vector4 (Vector4s.SIMD) do
-         V.Elements := (Left.Elements (X_Axis_X) * Right.Elements (Vector4s.X) +
-                        Left.Elements (X_Axis_Y) * Right.Elements (Vector4s.Y) +
-                        Left.Elements (X_Axis_Z) * Right.Elements (Vector4s.Z) +
-                        Left.Elements (X_Axis_W) * Right.Elements (Vector4s.W),
+         V.Elements := (Vector4s.X => Left.Elements (X_Axis_X) * Right.Elements (Vector4s.X) +
+                                      Left.Elements (X_Axis_Y) * Right.Elements (Vector4s.Y) +
+                                      Left.Elements (X_Axis_Z) * Right.Elements (Vector4s.Z) +
+                                      Left.Elements (X_Axis_W) * Right.Elements (Vector4s.W),
 
-                        Left.Elements (Y_Axis_X) * Right.Elements (Vector4s.X) +
-                        Left.Elements (Y_Axis_Y) * Right.Elements (Vector4s.Y) +
-                        Left.Elements (Y_Axis_Z) * Right.Elements (Vector4s.Z) +
-                        Left.Elements (Y_Axis_W) * Right.Elements (Vector4s.W),
+                        Vector4s.Y => Left.Elements (Y_Axis_X) * Right.Elements (Vector4s.X) +
+                                      Left.Elements (Y_Axis_Y) * Right.Elements (Vector4s.Y) +
+                                      Left.Elements (Y_Axis_Z) * Right.Elements (Vector4s.Z) +
+                                      Left.Elements (Y_Axis_W) * Right.Elements (Vector4s.W),
 
-                        Left.Elements (Z_Axis_X) * Right.Elements (Vector4s.X) +
-                        Left.Elements (Z_Axis_Y) * Right.Elements (Vector4s.Y) +
-                        Left.Elements (Z_Axis_Z) * Right.Elements (Vector4s.Z) +
-                        Left.Elements (Z_Axis_W) * Right.Elements (Vector4s.W),
+                        Vector4s.Z => Left.Elements (Z_Axis_X) * Right.Elements (Vector4s.X) +
+                                      Left.Elements (Z_Axis_Y) * Right.Elements (Vector4s.Y) +
+                                      Left.Elements (Z_Axis_Z) * Right.Elements (Vector4s.Z) +
+                                      Left.Elements (Z_Axis_W) * Right.Elements (Vector4s.W),
 
-                        Left.Elements (Translation_X) * Right.Elements (Vector4s.X) +
-                        Left.Elements (Translation_Y) * Right.Elements (Vector4s.Y) +
-                        Left.Elements (Translation_Z) * Right.Elements (Vector4s.Z) +
-                        Left.Elements (Translation_W) * Right.Elements (Vector4s.W));
+                        Vector4s.W => Left.Elements (Translation_X) * Right.Elements (Vector4s.X) +
+                                      Left.Elements (Translation_Y) * Right.Elements (Vector4s.Y) +
+                                      Left.Elements (Translation_Z) * Right.Elements (Vector4s.Z) +
+                                      Left.Elements (Translation_W) * Right.Elements (Vector4s.W));
       end return;
    end "*";
 
