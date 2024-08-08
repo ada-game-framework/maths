@@ -72,6 +72,8 @@ package Maths.Matrix4s is
 
    function Translate (X, Y, Z : Float) return Matrix4;
    function Scale (X, Y, Z : Float) return Matrix4;
+
+   function Switch_Coordinate_Systems return Matrix4 is (Scale (1.0, 1.0, -1.0));
 private
    Identity : constant Matrix4 :=
      (Which       => Matrix_2D,
