@@ -197,4 +197,22 @@ package body Maths.Matrix4s is
                         others => 0.0);
       end return;
    end Rotate_Around_Z;
+
+
+   function Perspective (Field_of_View, Aspect_Ratio, Near, Far : Float) return Matrix4 is
+      Q            : constant Float := 1.0 / (Trig.Tan (Field_of_View / 2.0));
+      A            : constant Float := Q / Aspect_Ratio;
+      Near_Sub_Far : constant Float := Near - Far;
+      B            : constant Float := (Near + Far) / Near_Sub_Far;
+      C            : constant Float := (2.0 * (Near * Far)) / Near_Sub_Far;
+   begin
+      return M : Matrix4 (Which => Components) do
+         M.Elements := (X_Axis_X      => A,
+                        Y_Axis_Y      => Q,
+                        Z_Axis_Z      => B,
+                        Z_Axis_W      => -1.0,
+                        Translation_Z => C,
+                        others        => 0.0);
+      end return;
+   end Perspective;
 end Maths.Matrix4s;
