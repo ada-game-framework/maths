@@ -59,6 +59,8 @@ package Maths.Vector4s is
    function Length (V : Vector4) return Float with
      Inline;
 
+   function Magnitude (V : Vector4) return Float renames Length;
+
    procedure Normalise (V : in out Vector4) with
      Inline;
 
