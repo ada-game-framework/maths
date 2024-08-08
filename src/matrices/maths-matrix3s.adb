@@ -42,12 +42,12 @@ package body Maths.Matrix3s is
    end "*";
 
 
-   function Translation (X, Y : Float) return Matrix3 is
+   function Translate (X, Y : Float) return Matrix3 is
    begin
       return M : Matrix3 (Which => Components) do
          M.Elements := (Translation_X => X, Translation_Y => Y,
                         Translation_W | X_Axis_X | Y_Axis_Y => 1.0,
                         others => 0.0);
       end return;
-   end Translation;
+   end Translate;
 end Maths.Matrix3s;

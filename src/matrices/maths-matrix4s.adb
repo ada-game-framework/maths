@@ -126,12 +126,12 @@ package body Maths.Matrix4s is
    end "*";
 
 
-   function Translation (X, Y, Z : Float) return Matrix4 is
+   function Translate (X, Y, Z : Float) return Matrix4 is
    begin
       return M : Matrix4 (Which => Components) do
          M.Elements := (Translation_X => X, Translation_Y => Y, Translation_Z => Z,
                         X_Axis_X | Y_Axis_Y | Z_Axis_Z => 1.0,
                         others => 0.0);
       end return;
-   end Translation;
+   end Translate;
 end Maths.Matrix4s;

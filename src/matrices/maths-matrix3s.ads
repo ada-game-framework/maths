@@ -72,7 +72,7 @@ package Maths.Matrix3s is
      Inline;
 
    --  A 3x3 matrix can be used to translate a 2D vector.
-   function Translation (X, Y : Float) return Matrix3;
+   function Translate (X, Y : Float) return Matrix3;
 private
    Identity : constant Matrix3 :=
      (Which       => Matrix_2D,

@@ -70,7 +70,7 @@ package Maths.Matrix4s is
    function "*" (Left, Right : Matrix4) return Matrix4 with
      Inline;
 
-   function Translation (X, Y, Z : Float) return Matrix4;
+   function Translate (X, Y, Z : Float) return Matrix4;
 private
    Identity : constant Matrix4 :=
      (Which       => Matrix_2D,
