@@ -2,6 +2,8 @@
 --  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
 ------------------------------------------------------------------------------------------------------------------------
 with Ada.Numerics.Generic_Elementary_Functions;
+with Ada.Strings.Fixed;
+with Ada.Text_IO;
 
 package body Maths.Vector4s is
    package Trig is new Ada.Numerics.Generic_Elementary_Functions (Float);
@@ -60,4 +62,30 @@ package body Maths.Vector4s is
                       Z => V.Elements (Z) / L,
                       W => V.Elements (W) / L);
    end Normalise;
+
+
+   procedure Vector4_Image (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class; Arg : in Vector4) is
+      function Convert (F : Float) return String is
+         use Ada.Strings;
+         use Ada.Strings.Fixed;
+         use Ada.Text_IO;
+
+         package FIO is new Float_IO (Float);
+         use FIO;
+
+         Result : String (1 .. 20) := (others => ' ');
+      begin
+         Put (To   => Result,
+              Item => F,
+              Aft  => 4,
+              Exp  => 0);
+
+         return Trim (Result, Both);
+      end Convert;
+   begin
+      Buffer.Put ("(X => " & Convert (Arg.Elements (X)) &
+                  ", Y => " & Convert (Arg.Elements (Y)) &
+                  ", Z => " & Convert (Arg.Elements (Z)) &
+                  ", W => " & Convert (Arg.Elements (W)) & ")");
+   end Vector4_Image;
 end Maths.Vector4s;

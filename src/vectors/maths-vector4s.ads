@@ -3,6 +3,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 --  Maths.Vector4s
 ------------------------------------------------------------------------------------------------------------------------
+with Ada.Strings.Text_Buffers;
 with GNAT.SSE.Vector_Types;  --  TODO: Create local versions for portability.
 
 package Maths.Vector4s is
@@ -30,7 +31,8 @@ package Maths.Vector4s is
       end case;
    end record with
      Convention => C,
-     Unchecked_Union;
+     Unchecked_Union,
+     Put_Image => Vector4_Image;
 
    --  Operators.
    function "+" (Left, Right : Vector4) return Vector4 with
@@ -47,4 +49,6 @@ package Maths.Vector4s is
 
    procedure Normalise (V : in out Vector4) with
      Inline;
+
+   procedure Vector4_Image (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class; Arg : in Vector4);
 end Maths.Vector4s;
