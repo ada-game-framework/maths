@@ -52,7 +52,7 @@ package Maths.Vector4s is
    function Cross (Left, Right : Vector4) return Vector4 is
      (Which    => Components,
       Elements => (X => (Left.Elements (Y) * Right.Elements (Z)) - (Left.Elements (Z) * Right.Elements (Y)),
-                   Y => (Left.Elements (Z) * Right.Elements (X)) - (Left.Elements (Y) * Right.Elements (Z)),
+                   Y => (Left.Elements (Z) * Right.Elements (X)) - (Left.Elements (X) * Right.Elements (Z)),
                    Z => (Left.Elements (X) * Right.Elements (Y)) - (Left.Elements (Y) * Right.Elements (X)),
                    W => 1.0));
 
