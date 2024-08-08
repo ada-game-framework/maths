@@ -72,6 +72,9 @@ package Maths.Matrix4s is
 
    function Translate (X, Y, Z : Float) return Matrix4;
    function Scale (X, Y, Z : Float) return Matrix4;
+   function Rotate_Around_X (Angle : Float) return Matrix4;
+   function Rotate_Around_Y (Angle : Float) return Matrix4;
+   function Rotate_Around_Z (Angle : Float) return Matrix4;
 
    function Switch_Coordinate_Systems return Matrix4 is (Scale (1.0, 1.0, -1.0));
 private

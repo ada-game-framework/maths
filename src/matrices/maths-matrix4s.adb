@@ -1,8 +1,14 @@
 ------------------------------------------------------------------------------------------------------------------------
 --  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
 ------------------------------------------------------------------------------------------------------------------------
+with Ada.Numerics.Generic_Elementary_Functions;
+
 package body Maths.Matrix4s is
    use type Vector4s.Vector4;
+
+   package Trig is new Ada.Numerics.Generic_Elementary_Functions (Float);
+   use Trig;
+
 
    function "+" (Left, Right : Matrix4) return Matrix4 is
    begin
@@ -146,4 +152,49 @@ package body Maths.Matrix4s is
                         others => 0.0);
       end return;
    end Scale;
+
+
+   function Rotate_Around_X (Angle : Float) return Matrix4 is
+      Cos_Theta : constant Float := Cos (Angle);
+      Sin_Theta : constant Float := Sin (Angle);
+   begin
+      return M : Matrix4 (Which => Components) do
+         M.Elements := (X_Axis_X | Translation_W => 1.0,
+                        Y_Axis_Y => Cos_Theta,
+                        Y_Axis_Z => Sin_Theta,
+                        Z_Axis_Y => -Sin_Theta,
+                        Z_Axis_Z => Cos_Theta,
+                        others => 0.0);
+      end return;
+   end Rotate_Around_X;
+
+
+   function Rotate_Around_Y (Angle : Float) return Matrix4 is
+      Cos_Theta : constant Float := Cos (Angle);
+      Sin_Theta : constant Float := Sin (Angle);
+   begin
+      return M : Matrix4 (Which => Components) do
+         M.Elements := (Y_Axis_Y | Translation_W => 1.0,
+                        X_Axis_X => Cos_Theta,
+                        X_Axis_Z => -Sin_Theta,
+                        Z_Axis_X => Sin_Theta,
+                        Z_Axis_Z => Cos_Theta,
+                        others => 0.0);
+      end return;
+   end Rotate_Around_Y;
+
+
+   function Rotate_Around_Z (Angle : Float) return Matrix4 is
+      Cos_Theta : constant Float := Cos (Angle);
+      Sin_Theta : constant Float := Sin (Angle);
+   begin
+      return M : Matrix4 (Which => Components) do
+         M.Elements := (Z_Axis_Z | Translation_W => 1.0,
+                        X_Axis_X => Cos_Theta,
+                        X_Axis_Y => Sin_Theta,
+                        Y_Axis_X => -Sin_Theta,
+                        Y_Axis_Y => Cos_Theta,
+                        others => 0.0);
+      end return;
+   end Rotate_Around_Z;
 end Maths.Matrix4s;
