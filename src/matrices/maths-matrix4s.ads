@@ -71,6 +71,7 @@ package Maths.Matrix4s is
      Inline;
 
    function Translate (X, Y, Z : Float) return Matrix4;
+   function Scale (X, Y, Z : Float) return Matrix4;
 private
    Identity : constant Matrix4 :=
      (Which       => Matrix_2D,

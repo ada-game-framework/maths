@@ -134,4 +134,16 @@ package body Maths.Matrix4s is
                         others => 0.0);
       end return;
    end Translate;
+
+
+   function Scale (X, Y, Z : Float) return Matrix4 is
+   begin
+      return M : Matrix4 (Which => Components) do
+         M.Elements := (X_Axis_X => X,
+                        Y_Axis_Y => Y,
+                        Z_Axis_Z => Z,
+                        Translation_W => 1.0,
+                        others => 0.0);
+      end return;
+   end Scale;
 end Maths.Matrix4s;
