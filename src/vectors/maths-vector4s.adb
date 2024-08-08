@@ -64,7 +64,7 @@ package body Maths.Vector4s is
    end Normalise;
 
 
-   procedure Vector4_Image (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class; Arg : in Vector4) is
+   procedure Vector4_Image (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class; Arg : Vector4) is
       function Convert (F : Float) return String is
          use Ada.Strings;
          use Ada.Strings.Fixed;

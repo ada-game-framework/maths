@@ -50,5 +50,5 @@ package Maths.Vector4s is
    procedure Normalise (V : in out Vector4) with
      Inline;
 
-   procedure Vector4_Image (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class; Arg : in Vector4);
+   procedure Vector4_Image (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class; Arg : Vector4);
 end Maths.Vector4s;
