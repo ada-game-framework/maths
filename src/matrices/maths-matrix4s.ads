@@ -30,9 +30,9 @@ package Maths.Matrix4s is
 
    type M128_Array is array (Basis_Axes) of SIMDV.m128;  --  The machine representation.
    type Float_Array is array (Matrix_Elements) of Float;
-   type Vector_Array is array (Axes) of Vector4s.Vector4 (Vector4s.Components);
+   type Vector_Array is array (Basis_Axes) of Vector4s.Vector4 (Vector4s.Components);
 
-   type Matrix_2D_Array is array (Basis_Axes, Axes) of Float with
+   type Matrix_2D_Array is array (Axes, Basis_Axes) of Float with
      Convention => Fortran;
 
    type Matrix_Access_Type is (SIMD, Components, Matrix_2D, Vectors);
