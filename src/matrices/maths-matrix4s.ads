@@ -67,6 +67,9 @@ package Maths.Matrix4s is
    function "*" (Left : Matrix4; Right : Vector4s.Vector4) return Vector4s.Vector4 with
      Inline;
 
+   function "*" (Left, Right : Matrix4) return Matrix4 with
+     Inline;
+
    function Translation (X, Y, Z : Float) return Matrix4;
 private
    Identity : constant Matrix4 :=
