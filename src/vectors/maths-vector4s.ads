@@ -44,6 +44,18 @@ package Maths.Vector4s is
    function "*" (Left : Vector4; Scalar : Float) return Vector4 with
      Inline;
 
+   function Dot (Left, Right : Vector4) return Float is
+     ((Left.Elements (X) * Right.Elements (X)) +
+      (Left.Elements (Y) * Right.Elements (Y)) +
+      (Left.Elements (Z) * Right.Elements (Z)));
+
+   function Cross (Left, Right : Vector4) return Vector4 is
+     (Which    => Components,
+      Elements => (X => (Left.Elements (Y) * Right.Elements (Z)) - (Left.Elements (Z) * Right.Elements (Y)),
+                   Y => (Left.Elements (Z) * Right.Elements (X)) - (Left.Elements (Y) * Right.Elements (Z)),
+                   Z => (Left.Elements (X) * Right.Elements (Y)) - (Left.Elements (Y) * Right.Elements (X)),
+                   W => 1.0));
+
    function Length (V : Vector4) return Float with
      Inline;
 
