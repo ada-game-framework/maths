@@ -30,6 +30,17 @@ package body Maths.Vector4s is
    end "-";
 
 
+   function "-" (Right : Vector4) return Vector4 is
+   begin
+      return V : Vector4 (Components) do
+         V.Elements (X) := -Right.Elements (X);
+         V.Elements (Y) := -Right.Elements (Y);
+         V.Elements (Z) := -Right.Elements (Z);
+         V.Elements (W) := -Right.Elements (W);
+      end return;
+   end "-";
+
+
    function "*" (Left : Vector4; Scalar : Float) return Vector4 is
    begin
       return V : Vector4 (Components) do
@@ -61,6 +72,16 @@ package body Maths.Vector4s is
                       Y => V.Elements (Y) / L,
                       Z => V.Elements (Z) / L,
                       W => V.Elements (W) / L);
+   end Normalise;
+
+
+   function Normalise (V : Vector4) return Vector4 is
+      L : constant Float := Length (V);
+   begin
+      return To_Vector (New_X => V.Elements (X) / L,
+                        New_Y => V.Elements (Y) / L,
+                        New_Z => V.Elements (Z) / L,
+                        New_W => V.Elements (W) / L);
    end Normalise;
 
 

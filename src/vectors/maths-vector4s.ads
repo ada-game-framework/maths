@@ -34,11 +34,17 @@ package Maths.Vector4s is
      Unchecked_Union,
      Put_Image => Vector4_Image;
 
+   function To_Vector (New_X, New_Y, New_Z, New_W : Float) return Vector4 is
+     (Vector4'(Which => Components, Elements => (New_X, New_Y, New_Z, New_W)));
+
    --  Operators.
    function "+" (Left, Right : Vector4) return Vector4 with
      Inline;
 
    function "-" (Left, Right : Vector4) return Vector4 with
+     Inline;
+
+   function "-" (Right : Vector4) return Vector4 with
      Inline;
 
    function "*" (Left : Vector4; Scalar : Float) return Vector4 with
@@ -62,6 +68,9 @@ package Maths.Vector4s is
    function Magnitude (V : Vector4) return Float renames Length;
 
    procedure Normalise (V : in out Vector4) with
+     Inline;
+
+   function Normalise (V : Vector4) return Vector4 with
      Inline;
 
    procedure Vector4_Image (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class; Arg : Vector4);
