@@ -79,6 +79,7 @@ package Maths.Matrix4s is
    function Switch_Coordinate_Systems return Matrix4 is (Scale (1.0, 1.0, -1.0));
 
    function Perspective (Field_of_View, Aspect_Ratio, Near, Far : Float) return Matrix4;
+   function Orthographic (Left, Right, Top, Bottom, Near, Far : Float) return Matrix4;
 private
    Identity : constant Matrix4 :=
      (Which       => Matrix_2D,

@@ -215,4 +215,25 @@ package body Maths.Matrix4s is
                         others        => 0.0);
       end return;
    end Perspective;
+
+
+   function Orthographic (Left, Right, Top, Bottom, Near, Far : Float) return Matrix4 is
+      R_Sub_L      : constant Float := Right - Left;
+      R_Add_L      : constant Float := Right + Left;
+      T_Sub_B      : constant Float := Top - Bottom;
+      T_Add_B      : constant Float := Top + Bottom;
+      Far_Sub_Near : constant Float := Far - Near;
+      Far_Add_Near : constant Float := Far + Near;
+   begin
+      return M : Matrix4 (Which => Components) do
+         M.Elements := (X_Axis_X      => 2.0 / R_Sub_L,
+                        Y_Axis_Y      => 2.0 / T_Sub_B,
+                        Z_Axis_Z      => -2.0 / Far_Sub_Near,
+                        Translation_X => R_Add_L / R_Sub_L,
+                        Translation_Y => T_Add_B / T_Sub_B,
+                        Translation_Z => Far_Add_Near / Far_Sub_Near,
+                        Translation_W => 1.0,
+                        others        => 0.0);
+      end return;
+   end Orthographic;
 end Maths.Matrix4s;
