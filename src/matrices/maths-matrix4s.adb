@@ -236,4 +236,32 @@ package body Maths.Matrix4s is
                         others        => 0.0);
       end return;
    end Orthographic;
+
+
+   function Look_At (Eye, Target, Initial_Up : Vector4s.Vector4) return Matrix4 is
+      Forward   : constant Vector4s.Vector4 := Vector4s.Normalise (Eye - Target);
+      Minus_Fwd : constant Vector4s.Vector4 := -Forward;
+      Side      : constant Vector4s.Vector4 := Vector4s.Normalise (Vector4s.Cross (Minus_Fwd, Initial_Up));
+      Up        : constant Vector4s.Vector4 := Vector4s.Normalise (Vector4s.Cross (Side, Minus_Fwd));
+   begin
+      --  TODO: Is this right??
+      return M : Matrix4 (Which => Vectors) do
+         M.Axes := (X => Vector4s.To_Vector (Side.Elements (Vector4s.X),
+                                             Side.Elements (Vector4s.Y),
+                                             Side.Elements (Vector4s.Z),
+                                             0.0),
+                    Y => Vector4s.To_Vector (Up.Elements (Vector4s.X),
+                                             Up.Elements (Vector4s.Y),
+                                             Up.Elements (Vector4s.Z),
+                                             0.0),
+                    Z => Vector4s.To_Vector (Minus_Fwd.Elements (Vector4s.X),
+                                             Minus_Fwd.Elements (Vector4s.Y),
+                                             Minus_Fwd.Elements (Vector4s.Z),
+                                             0.0),
+                    T => Vector4s.To_Vector (-(Vector4s.Dot (Side, Eye)),
+                                             -(Vector4s.Dot (Up, Eye)),
+                                             -(Vector4s.Dot (Minus_Fwd, Eye)),
+                                             1.0));
+      end return;
+   end Look_At;
 end Maths.Matrix4s;

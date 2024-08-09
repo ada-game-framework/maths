@@ -80,6 +80,8 @@ package Maths.Matrix4s is
 
    function Perspective (Field_of_View, Aspect_Ratio, Near, Far : Float) return Matrix4;
    function Orthographic (Left, Right, Top, Bottom, Near, Far : Float) return Matrix4;
+
+   function Look_At (Eye, Target, Initial_Up : Vector4s.Vector4) return Matrix4;
 private
    Identity : constant Matrix4 :=
      (Which       => Matrix_2D,
