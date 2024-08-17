@@ -50,6 +50,9 @@ package Maths.Matrix4s is
    type Matrix_2D_Array is array (Axes, Basis_Axes) of Float with
      Convention => Fortran;
 
+   type Row_Major_Matrix is new Matrix_2D_Array with
+     Convention => Ada;
+
    type Matrix_Access_Type is (SIMD, Components, Matrix_2D, Vectors);
 
    type Matrix4 (Which : Matrix_Access_Type) is record
