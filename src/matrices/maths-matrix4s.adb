@@ -2,6 +2,8 @@
 --  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
 ------------------------------------------------------------------------------------------------------------------------
 with Ada.Numerics.Generic_Elementary_Functions;
+with Ada.Strings.Fixed;
+with Ada.Text_IO;
 
 package body Maths.Matrix4s is
    use type Vector4s.Vector4;
@@ -10,123 +12,123 @@ package body Maths.Matrix4s is
    use Trig;
 
 
-   function "+" (Left, Right : Matrix4) return Matrix4 is
+   function "+" (L, R : Matrix4) return Matrix4 is
    begin
       return M : Matrix4 (Vectors) do
-         M.Axes (X) := Left.Axes (X) + Right.Axes (X);
-         M.Axes (Y) := Left.Axes (Y) + Right.Axes (Y);
-         M.Axes (Z) := Left.Axes (Z) + Right.Axes (Z);
-         M.Axes (T) := Left.Axes (T) + Right.Axes (T);
+         M.Axes (Right)       := L.Axes (Right) + R.Axes (Right);
+         M.Axes (Up)          := L.Axes (Up) + R.Axes (Up);
+         M.Axes (Forward)     := L.Axes (Forward) + R.Axes (Forward);
+         M.Axes (Translation) := L.Axes (Translation) + R.Axes (Translation);
       end return;
    end "+";
 
 
-   function "-" (Left, Right : Matrix4) return Matrix4 is
+   function "-" (L, R : Matrix4) return Matrix4 is
    begin
       return M : Matrix4 (Vectors) do
-         M.Axes (X) := Left.Axes (X) - Right.Axes (X);
-         M.Axes (Y) := Left.Axes (Y) - Right.Axes (Y);
-         M.Axes (Z) := Left.Axes (Z) - Right.Axes (Z);
-         M.Axes (T) := Left.Axes (T) - Right.Axes (T);
+         M.Axes (Right)       := L.Axes (Right) - R.Axes (Right);
+         M.Axes (Up)          := L.Axes (Up) - R.Axes (Up);
+         M.Axes (Forward)     := L.Axes (Forward) - R.Axes (Forward);
+         M.Axes (Translation) := L.Axes (Translation) - R.Axes (Translation);
       end return;
    end "-";
 
 
-   function "*" (Left : Matrix4; Right : Vector4s.Vector4) return Vector4s.Vector4 is
+   function "*" (L : Matrix4; R : Vector4s.Vector4) return Vector4s.Vector4 is
    begin
       return V : Vector4s.Vector4 (Vector4s.SIMD) do
-         V.Elements := (Vector4s.X => Left.Elements (X_Axis_X) * Right.Elements (Vector4s.X) +
-                                      Left.Elements (X_Axis_Y) * Right.Elements (Vector4s.Y) +
-                                      Left.Elements (X_Axis_Z) * Right.Elements (Vector4s.Z) +
-                                      Left.Elements (X_Axis_W) * Right.Elements (Vector4s.W),
+         V.Elements := (Vector4s.X => L.Elements (Right_Axis_X) * R.Elements (Vector4s.X) +
+                                      L.Elements (Right_Axis_Y) * R.Elements (Vector4s.Y) +
+                                      L.Elements (Right_Axis_Z) * R.Elements (Vector4s.Z) +
+                                      L.Elements (Right_Axis_W) * R.Elements (Vector4s.W),
 
-                        Vector4s.Y => Left.Elements (Y_Axis_X) * Right.Elements (Vector4s.X) +
-                                      Left.Elements (Y_Axis_Y) * Right.Elements (Vector4s.Y) +
-                                      Left.Elements (Y_Axis_Z) * Right.Elements (Vector4s.Z) +
-                                      Left.Elements (Y_Axis_W) * Right.Elements (Vector4s.W),
+                        Vector4s.Y => L.Elements (Up_Axis_X) * R.Elements (Vector4s.X) +
+                                      L.Elements (Up_Axis_Y) * R.Elements (Vector4s.Y) +
+                                      L.Elements (Up_Axis_Z) * R.Elements (Vector4s.Z) +
+                                      L.Elements (Up_Axis_W) * R.Elements (Vector4s.W),
 
-                        Vector4s.Z => Left.Elements (Z_Axis_X) * Right.Elements (Vector4s.X) +
-                                      Left.Elements (Z_Axis_Y) * Right.Elements (Vector4s.Y) +
-                                      Left.Elements (Z_Axis_Z) * Right.Elements (Vector4s.Z) +
-                                      Left.Elements (Z_Axis_W) * Right.Elements (Vector4s.W),
+                        Vector4s.Z => L.Elements (Forward_Axis_X) * R.Elements (Vector4s.X) +
+                                      L.Elements (Forward_Axis_Y) * R.Elements (Vector4s.Y) +
+                                      L.Elements (Forward_Axis_Z) * R.Elements (Vector4s.Z) +
+                                      L.Elements (Forward_Axis_W) * R.Elements (Vector4s.W),
 
-                        Vector4s.W => Left.Elements (Translation_X) * Right.Elements (Vector4s.X) +
-                                      Left.Elements (Translation_Y) * Right.Elements (Vector4s.Y) +
-                                      Left.Elements (Translation_Z) * Right.Elements (Vector4s.Z) +
-                                      Left.Elements (Translation_W) * Right.Elements (Vector4s.W));
+                        Vector4s.W => L.Elements (Translation_X) * R.Elements (Vector4s.X) +
+                                      L.Elements (Translation_Y) * R.Elements (Vector4s.Y) +
+                                      L.Elements (Translation_Z) * R.Elements (Vector4s.Z) +
+                                      L.Elements (Translation_W) * R.Elements (Vector4s.W));
       end return;
    end "*";
 
 
    --      Row         * column
-   --      X  Y  Z  T    X  Y  Z  T
+   --      R  U  F  T    R  U  F  T
    -------------------------------
    --  X | Xx Yx Zx Tx   Ax Bx Cx Dx   XxAx+YxAy+ZxAz+TxAw XxBx+YxBy+ZxBz+TxBw XxCx+YxCy+ZxCz+TxCw XxDx+YxDy+ZxDz+TxDw
    --  Y | Xy Yy Zy Ty * Ay By Cy Dy = XyAx+YyAy+ZyAz+TyAw XyBx+YyBy+ZyBz+TyBw XyCx+YyCy+ZyCz+TyCw XyDx+YyDy+ZyDz+TyDw
    --  Z | Xz Yz Zz Tz   Az Bz Cz Dz   XzAx+YzAy+ZzAz+TzAw XzBx+YzBy+ZzBz+TzBw XzCx+YzCy+ZzCz+TzCw XzDx+YzDy+ZzDz+TzDw
    --  W | Xw Yw Zw Tw   Aw Bw Cw Dw   XwAx+YwAy+ZwAz+TwAw XwBx+YwBy+ZwBz+TwBw XwCx+YwCy+ZwCz+TwCw XwDx+YwDy+ZwDz+TwDw
-   function "*" (Left, Right : Matrix4) return Matrix4 is
-      LE : Float_Array renames Left.Elements;
-      RE : Matrix_2D_Array renames Right.Elements_2D;
+   function "*" (L, R : Matrix4) return Matrix4 is
+      LE : Float_Array renames L.Elements;
+      RE : Float_Array renames R.Elements;
 
-      Xx : Float renames LE (X_Axis_X);
-      Yx : Float renames LE (Y_Axis_X);
-      Zx : Float renames LE (Z_Axis_X);
+      Xx : Float renames LE (Right_Axis_X);
+      Yx : Float renames LE (Up_Axis_X);
+      Zx : Float renames LE (Forward_Axis_X);
       Tx : Float renames LE (Translation_X);
 
-      Xy : Float renames LE (X_Axis_Y);
-      Yy : Float renames LE (Y_Axis_Y);
-      Zy : Float renames LE (Z_Axis_Y);
+      Xy : Float renames LE (Right_Axis_Y);
+      Yy : Float renames LE (Up_Axis_Y);
+      Zy : Float renames LE (Forward_Axis_Y);
       Ty : Float renames LE (Translation_Y);
 
-      Xz : Float renames LE (X_Axis_Z);
-      Yz : Float renames LE (Y_Axis_Z);
-      Zz : Float renames LE (Z_Axis_Z);
-      Tz : Float renames LE (Translation_W);
+      Xz : Float renames LE (Right_Axis_Z);
+      Yz : Float renames LE (Up_Axis_Z);
+      Zz : Float renames LE (Forward_Axis_Z);
+      Tz : Float renames LE (Translation_Z);
 
-      Xw : Float renames LE (X_Axis_W);
-      Yw : Float renames LE (Y_Axis_W);
-      Zw : Float renames LE (Z_Axis_W);
+      Xw : Float renames LE (Right_Axis_W);
+      Yw : Float renames LE (Up_Axis_W);
+      Zw : Float renames LE (Forward_Axis_W);
       Tw : Float renames LE (Translation_W);
 
-      Ax : Float renames RE (X, X);
-      Ay : Float renames RE (Y, X);
-      Az : Float renames RE (Z, X);
-      Aw : Float renames RE (W, X);
+      Ax : Float renames RE (Right_Axis_X);
+      Ay : Float renames RE (Right_Axis_Y);
+      Az : Float renames RE (Right_Axis_Z);
+      Aw : Float renames RE (Right_Axis_W);
 
-      Bx : Float renames RE (X, Y);
-      By : Float renames RE (Y, Y);
-      Bz : Float renames RE (Z, Y);
-      Bw : Float renames RE (W, Y);
+      Bx : Float renames RE (Up_Axis_X);
+      By : Float renames RE (Up_Axis_Y);
+      Bz : Float renames RE (Up_Axis_Z);
+      Bw : Float renames RE (Up_Axis_W);
 
-      Cx : Float renames RE (X, Z);
-      Cy : Float renames RE (Y, Z);
-      Cz : Float renames RE (Z, Z);
-      Cw : Float renames RE (W, Z);
+      Cx : Float renames RE (Forward_Axis_X);
+      Cy : Float renames RE (Forward_Axis_Y);
+      Cz : Float renames RE (Forward_Axis_Z);
+      Cw : Float renames RE (Forward_Axis_W);
 
-      Dx : Float renames RE (X, T);
-      Dy : Float renames RE (Y, T);
-      Dz : Float renames RE (Z, T);
-      Dw : Float renames RE (W, T);
+      Dx : Float renames RE (Translation_X);
+      Dy : Float renames RE (Translation_Y);
+      Dz : Float renames RE (Translation_Z);
+      Dw : Float renames RE (Translation_W);
    begin
       return M : Matrix4 (Components) do
          M.Elements := (
-            X_Axis_X      => (Xx * Ax) + (Yx * Ay) + (Zx * Az) + (Tx * Aw),
-            Y_Axis_X      => (Xx * Bx) + (Yx * By) + (Zx * Bz) + (Tx * Bw),
-            Z_Axis_X      => (Xx * Cx) + (Yx * Cy) + (Zx * Cz) + (Tx * Cw),
-            Translation_X => (Xx * Dx) + (Yx * Dy) + (Zx * Dz) + (Tx * Dw),
-            X_Axis_Y      => (Xy * Ax) + (Yy * Ay) + (Zy * Az) + (Ty * Aw),
-            Y_Axis_Y      => (Xy * Bx) + (Yy * By) + (Zy * Bz) + (Ty * Bw),
-            Z_Axis_Y      => (Xy * Cx) + (Yy * Cy) + (Zy * Cz) + (Ty * Cw),
-            Translation_Y => (Xy * Dx) + (Yy * Dy) + (Zy * Dz) + (Ty * Dw),
-            X_Axis_Z      => (Xz * Ax) + (Yz * Ay) + (Zz * Az) + (Tz * Aw),
-            Y_Axis_Z      => (Xz * Bx) + (Yz * By) + (Zz * Bz) + (Tz * Bw),
-            Z_Axis_Z      => (Xz * Cx) + (Yz * Cy) + (Zz * Cz) + (Tz * Cw),
-            Translation_Z => (Xz * Dx) + (Yz * Dy) + (Zz * Dz) + (Tz * Dw),
-            X_Axis_W      => (Xw * Ax) + (Yw * Ay) + (Zw * Az) + (Tw * Aw),
-            Y_Axis_W      => (Xw * Bx) + (Yw * By) + (Zw * Bz) + (Tw * Bw),
-            Z_Axis_W      => (Xw * Cx) + (Yw * Cy) + (Zw * Cz) + (Tw * Cw),
-            Translation_W => (Xw * Dx) + (Yw * Dy) + (Zw * Dz) + (Tw * Dw)
+            Right_Axis_X   => (Xx * Ax) + (Yx * Ay) + (Zx * Az) + (Tx * Aw),
+            Up_Axis_X      => (Xx * Bx) + (Yx * By) + (Zx * Bz) + (Tx * Bw),
+            Forward_Axis_X => (Xx * Cx) + (Yx * Cy) + (Zx * Cz) + (Tx * Cw),
+            Translation_X  => (Xx * Dx) + (Yx * Dy) + (Zx * Dz) + (Tx * Dw),
+            Right_Axis_Y   => (Xy * Ax) + (Yy * Ay) + (Zy * Az) + (Ty * Aw),
+            Up_Axis_Y      => (Xy * Bx) + (Yy * By) + (Zy * Bz) + (Ty * Bw),
+            Forward_Axis_Y => (Xy * Cx) + (Yy * Cy) + (Zy * Cz) + (Ty * Cw),
+            Translation_Y  => (Xy * Dx) + (Yy * Dy) + (Zy * Dz) + (Ty * Dw),
+            Right_Axis_Z   => (Xz * Ax) + (Yz * Ay) + (Zz * Az) + (Tz * Aw),
+            Up_Axis_Z      => (Xz * Bx) + (Yz * By) + (Zz * Bz) + (Tz * Bw),
+            Forward_Axis_Z => (Xz * Cx) + (Yz * Cy) + (Zz * Cz) + (Tz * Cw),
+            Translation_Z  => (Xz * Dx) + (Yz * Dy) + (Zz * Dz) + (Tz * Dw),
+            Right_Axis_W   => (Xw * Ax) + (Yw * Ay) + (Zw * Az) + (Tw * Aw),
+            Up_Axis_W      => (Xw * Bx) + (Yw * By) + (Zw * Bz) + (Tw * Bw),
+            Forward_Axis_W => (Xw * Cx) + (Yw * Cy) + (Zw * Cz) + (Tw * Cw),
+            Translation_W  => (Xw * Dx) + (Yw * Dy) + (Zw * Dz) + (Tw * Dw)
          );
       end return;
    end "*";
@@ -135,8 +137,10 @@ package body Maths.Matrix4s is
    function Translate (X, Y, Z : Float) return Matrix4 is
    begin
       return M : Matrix4 (Which => Components) do
-         M.Elements := (Translation_X => X, Translation_Y => Y, Translation_Z => Z,
-                        X_Axis_X | Y_Axis_Y | Z_Axis_Z => 1.0,
+         M.Elements := (Translation_X => X,
+                        Translation_Y => Y,
+                        Translation_Z => Z,
+                        Right_Axis_X | Up_Axis_Y | Forward_Axis_Z | Translation_W => 1.0,
                         others => 0.0);
       end return;
    end Translate;
@@ -145,11 +149,11 @@ package body Maths.Matrix4s is
    function Scale (X, Y, Z : Float) return Matrix4 is
    begin
       return M : Matrix4 (Which => Components) do
-         M.Elements := (X_Axis_X => X,
-                        Y_Axis_Y => Y,
-                        Z_Axis_Z => Z,
-                        Translation_W => 1.0,
-                        others => 0.0);
+         M.Elements := (Right_Axis_X   => X,
+                        Up_Axis_Y      => Y,
+                        Forward_Axis_Z => Z,
+                        Translation_W  => 1.0,
+                        others         => 0.0);
       end return;
    end Scale;
 
@@ -159,12 +163,13 @@ package body Maths.Matrix4s is
       Sin_Theta : constant Float := Sin (Angle);
    begin
       return M : Matrix4 (Which => Components) do
-         M.Elements := (X_Axis_X | Translation_W => 1.0,
-                        Y_Axis_Y => Cos_Theta,
-                        Y_Axis_Z => Sin_Theta,
-                        Z_Axis_Y => -Sin_Theta,
-                        Z_Axis_Z => Cos_Theta,
-                        others => 0.0);
+         M.Elements := (Right_Axis_X |
+                        Translation_W  => 1.0,
+                        Up_Axis_Y      => Cos_Theta,
+                        Up_Axis_Z      => Sin_Theta,
+                        Forward_Axis_Y => -Sin_Theta,
+                        Forward_Axis_Z => Cos_Theta,
+                        others         => 0.0);
       end return;
    end Rotate_Around_X;
 
@@ -174,12 +179,13 @@ package body Maths.Matrix4s is
       Sin_Theta : constant Float := Sin (Angle);
    begin
       return M : Matrix4 (Which => Components) do
-         M.Elements := (Y_Axis_Y | Translation_W => 1.0,
-                        X_Axis_X => Cos_Theta,
-                        X_Axis_Z => -Sin_Theta,
-                        Z_Axis_X => Sin_Theta,
-                        Z_Axis_Z => Cos_Theta,
-                        others => 0.0);
+         M.Elements := (Up_Axis_Y |
+                        Translation_W  => 1.0,
+                        Right_Axis_X   => Cos_Theta,
+                        Right_Axis_Z   => -Sin_Theta,
+                        Forward_Axis_X => Sin_Theta,
+                        Forward_Axis_Z => Cos_Theta,
+                        others         => 0.0);
       end return;
    end Rotate_Around_Y;
 
@@ -189,12 +195,13 @@ package body Maths.Matrix4s is
       Sin_Theta : constant Float := Sin (Angle);
    begin
       return M : Matrix4 (Which => Components) do
-         M.Elements := (Z_Axis_Z | Translation_W => 1.0,
-                        X_Axis_X => Cos_Theta,
-                        X_Axis_Y => Sin_Theta,
-                        Y_Axis_X => -Sin_Theta,
-                        Y_Axis_Y => Cos_Theta,
-                        others => 0.0);
+         M.Elements := (Forward_Axis_Z |
+                        Translation_W => 1.0,
+                        Right_Axis_X  => Cos_Theta,
+                        Right_Axis_Y  => Sin_Theta,
+                        Up_Axis_X     => -Sin_Theta,
+                        Up_Axis_Y     => Cos_Theta,
+                        others        => 0.0);
       end return;
    end Rotate_Around_Z;
 
@@ -207,12 +214,12 @@ package body Maths.Matrix4s is
       C            : constant Float := (2.0 * (Near * Far)) / Near_Sub_Far;
    begin
       return M : Matrix4 (Which => Components) do
-         M.Elements := (X_Axis_X      => A,
-                        Y_Axis_Y      => Q,
-                        Z_Axis_Z      => B,
-                        Z_Axis_W      => -1.0,
-                        Translation_Z => C,
-                        others        => 0.0);
+         M.Elements := (Right_Axis_X   => A,
+                        Up_Axis_Y      => Q,
+                        Forward_Axis_Z => B,
+                        Forward_Axis_W => -1.0,
+                        Translation_Z  => C,
+                        others         => 0.0);
       end return;
    end Perspective;
 
@@ -226,42 +233,68 @@ package body Maths.Matrix4s is
       Far_Add_Near : constant Float := Far + Near;
    begin
       return M : Matrix4 (Which => Components) do
-         M.Elements := (X_Axis_X      => 2.0 / R_Sub_L,
-                        Y_Axis_Y      => 2.0 / T_Sub_B,
-                        Z_Axis_Z      => -2.0 / Far_Sub_Near,
-                        Translation_X => R_Add_L / R_Sub_L,
-                        Translation_Y => T_Add_B / T_Sub_B,
-                        Translation_Z => Far_Add_Near / Far_Sub_Near,
-                        Translation_W => 1.0,
-                        others        => 0.0);
+         M.Elements := (Right_Axis_X   => 2.0 / R_Sub_L,
+                        Up_Axis_Y      => 2.0 / T_Sub_B,
+                        Forward_Axis_Z => -2.0 / Far_Sub_Near,
+                        Translation_X  => -(R_Add_L / R_Sub_L),
+                        Translation_Y  => -(T_Add_B / T_Sub_B),
+                        Translation_Z  => -(Far_Add_Near / Far_Sub_Near),
+                        Translation_W  => 1.0,
+                        others         => 0.0);
       end return;
    end Orthographic;
 
 
    function Look_At (Eye, Target, Initial_Up : Vector4s.Vector4) return Matrix4 is
-      Forward   : constant Vector4s.Vector4 := Vector4s.Normalise (Eye - Target);
-      Minus_Fwd : constant Vector4s.Vector4 := -Forward;
-      Side      : constant Vector4s.Vector4 := Vector4s.Normalise (Vector4s.Cross (Minus_Fwd, Initial_Up));
-      Up        : constant Vector4s.Vector4 := Vector4s.Normalise (Vector4s.Cross (Side, Minus_Fwd));
+      New_Forward : constant Vector4s.Vector4 := Vector4s.Normalise (Eye - Target);
+      Minus_Fwd   : constant Vector4s.Vector4 := -New_Forward;
+      Side        : constant Vector4s.Vector4 := Vector4s.Normalise (Vector4s.Cross (Minus_Fwd, Initial_Up));
+      New_Up      : constant Vector4s.Vector4 := Vector4s.Normalise (Vector4s.Cross (Side, Minus_Fwd));
    begin
       --  TODO: Is this right??
       return M : Matrix4 (Which => Vectors) do
-         M.Axes := (X => Vector4s.To_Vector (Side.Elements (Vector4s.X),
-                                             Side.Elements (Vector4s.Y),
-                                             Side.Elements (Vector4s.Z),
-                                             0.0),
-                    Y => Vector4s.To_Vector (Up.Elements (Vector4s.X),
-                                             Up.Elements (Vector4s.Y),
-                                             Up.Elements (Vector4s.Z),
-                                             0.0),
-                    Z => Vector4s.To_Vector (Minus_Fwd.Elements (Vector4s.X),
-                                             Minus_Fwd.Elements (Vector4s.Y),
-                                             Minus_Fwd.Elements (Vector4s.Z),
-                                             0.0),
-                    T => Vector4s.To_Vector (-(Vector4s.Dot (Side, Eye)),
-                                             -(Vector4s.Dot (Up, Eye)),
-                                             -(Vector4s.Dot (Minus_Fwd, Eye)),
-                                             1.0));
+         M.Axes := (Right       => Vector4s.To_Vector (Side.Elements (Vector4s.X),
+                                                       New_Up.Elements (Vector4s.X),
+                                                       Minus_Fwd.Elements (Vector4s.X),
+                                                       0.0),
+                    Up          => Vector4s.To_Vector (Side.Elements (Vector4s.Y),
+                                                       New_Up.Elements (Vector4s.Y),
+                                                       Minus_Fwd.Elements (Vector4s.Y),
+                                                       0.0),
+                    Forward     => Vector4s.To_Vector (Side.Elements (Vector4s.Z),
+                                                       New_Up.Elements (Vector4s.Z),
+                                                       Minus_Fwd.Elements (Vector4s.Z),
+                                                       0.0),
+                    Translation => Vector4s.To_Vector (-(Vector4s.Dot (Side, Eye)),
+                                                       -(Vector4s.Dot (New_Up, Eye)),
+                                                       -(Vector4s.Dot (Minus_Fwd, Eye)),
+                                                       1.0));
       end return;
    end Look_At;
+
+
+   procedure Matrix4_Image (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class; Arg : Matrix4) is
+      function Convert (F : Float) return String is
+         use Ada.Strings;
+         use Ada.Strings.Fixed;
+         use Ada.Text_IO;
+
+         package FIO is new Float_IO (Float);
+         use FIO;
+
+         Result : String (1 .. 20) := (others => ' ');
+      begin
+         Put (To   => Result,
+              Item => F,
+              Aft  => 4,
+              Exp  => 0);
+
+         return Trim (Result, Both);
+      end Convert;
+   begin
+      Buffer.Put ("(Right => " & Arg.Axes (Right)'Image &
+                  ", Up => " & Arg.Axes (Up)'Image &
+                  ", Forward => " & Arg.Axes (Forward)'Image &
+                  ", Translation => " & Arg.Axes (Translation)'Image & ")");
+   end Matrix4_Image;
 end Maths.Matrix4s;
