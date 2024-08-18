@@ -92,7 +92,7 @@ package Maths.Matrix3s is
    function "*" (L, R : Matrix3) return Matrix3 with
      Inline;
 
-   --  function Translate (X, Y, Z : Float) return Matrix3;
+   function Translate (X, Y : Float) return Matrix3;
    function Scale (X, Y, Z : Float) return Matrix3;
    function Rotate_Around_X (Angle : Float) return Matrix3;
    function Rotate_Around_Y (Angle : Float) return Matrix3;
