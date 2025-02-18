@@ -94,6 +94,7 @@ package Maths.Matrix4s is
    function Rotate_Around_X (Angle : Float) return Matrix4;
    function Rotate_Around_Y (Angle : Float) return Matrix4;
    function Rotate_Around_Z (Angle : Float) return Matrix4;
+   function Rotate (Angle : Float; Axis : Vector4s.Vector4) return Matrix4;
 
    function Switch_Coordinate_Systems return Matrix4 is (Scale (1.0, 1.0, -1.0));
 

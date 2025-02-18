@@ -4,6 +4,7 @@
 with Ada.Numerics.Generic_Elementary_Functions;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
+with Maths.Vector4s;
 
 package body Maths.Matrix4s is
    use type Vector4s.Vector4;
@@ -204,6 +205,53 @@ package body Maths.Matrix4s is
                         others        => 0.0);
       end return;
    end Rotate_Around_Z;
+
+
+   --  Create a rotation matrix from an angle and a unit axis.
+   --
+   --  Let v = (x, y, z)^T, and u = v / |v| = (x', y', z')^T
+   --      | 0  -z'  y'|
+   --  S = | z'  0  -x'|
+   --      |-y'  x'  0 |
+   --  M = uu^T + (cos a)(I - uu^T) + (sin a)S
+   --
+   --  or, from David Eberly's book:
+   --  M = I + (sin a)S + (1 - cos a)S^2
+   function Rotate (Angle : Float; Axis : Vector4s.Vector4) return Matrix4 is
+      --  Taken from Foley & Van Dam.
+      Cos           : Float := Trig.Cos(Angle);
+      Sin           : Float := Trig.Sin(Angle);
+      One_Minus_Cos : Float := 1.0 - Cos;
+      XX            : Float := Axis.Elements (Vector4s.X) * Axis.Elements (Vector4s.X);
+      YY            : Float := Axis.Elements (Vector4s.Y) * Axis.Elements (Vector4s.Y);
+      ZZ            : Float := Axis.Elements (Vector4s.Z) * Axis.Elements (Vector4s.Z);
+      XY            : Float := Axis.Elements (Vector4s.X) * Axis.Elements (Vector4s.Y);
+      YZ            : Float := Axis.Elements (Vector4s.Y) * Axis.Elements (Vector4s.Z);
+      ZX            : Float := Axis.Elements (Vector4s.X) * Axis.Elements (Vector4s.Z);
+      Result        : Matrix4 (Components);
+   begin
+      Result.Elements (Right_Axis_X) := XX + (Cos * (1.0 - XX));
+      Result.Elements (Right_Axis_Y) := (XY * One_Minus_Cos) + (Axis.Elements (Vector4s.Z) * Sin);
+      Result.Elements (Right_Axis_Z) := (ZX * One_Minus_Cos) - (Axis.Elements (Vector4s.Y) * Sin);
+      Result.Elements (Right_Axis_W) := 0.0;
+
+      Result.Elements (Up_Axis_X) := (XY * One_Minus_Cos) - (Axis.Elements (Vector4s.Z) * Sin);
+      Result.Elements (Up_Axis_Y) := YY + (Cos * (1.0 - YY));
+      Result.Elements (Up_Axis_Z) := (YZ * One_Minus_Cos) + (Axis.Elements (Vector4s.X) * Sin);
+      Result.Elements (Up_Axis_W) := 0.0;
+
+      Result.Elements (Forward_Axis_X) := (ZX * One_Minus_Cos) + (Axis.Elements (Vector4s.Y) * Sin);
+      Result.Elements (Forward_Axis_Y) := (YZ * One_Minus_Cos) - (Axis.Elements (Vector4s.X) * Sin);
+      Result.Elements (Forward_Axis_Z) := ZZ + (Cos * (1.0 - ZZ));
+      Result.Elements (Forward_Axis_W) := 0.0;
+
+      Result.Elements (Translation_X) := 0.0;
+      Result.Elements (Translation_Y) := 0.0;
+      Result.Elements (Translation_Z) := 0.0;
+      Result.Elements (Translation_W) := 1.0;
+
+      return Result;
+   end Rotate;
 
 
    function Perspective (Field_of_View, Aspect_Ratio, Near, Far : Float) return Matrix4 is
