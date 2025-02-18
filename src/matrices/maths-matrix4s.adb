@@ -219,15 +219,15 @@ package body Maths.Matrix4s is
    --  M = I + (sin a)S + (1 - cos a)S^2
    function Rotate (Angle : Float; Axis : Vector4s.Vector4) return Matrix4 is
       --  Taken from Foley & Van Dam.
-      Cos           : Float := Trig.Cos(Angle);
-      Sin           : Float := Trig.Sin(Angle);
-      One_Minus_Cos : Float := 1.0 - Cos;
-      XX            : Float := Axis.Elements (Vector4s.X) * Axis.Elements (Vector4s.X);
-      YY            : Float := Axis.Elements (Vector4s.Y) * Axis.Elements (Vector4s.Y);
-      ZZ            : Float := Axis.Elements (Vector4s.Z) * Axis.Elements (Vector4s.Z);
-      XY            : Float := Axis.Elements (Vector4s.X) * Axis.Elements (Vector4s.Y);
-      YZ            : Float := Axis.Elements (Vector4s.Y) * Axis.Elements (Vector4s.Z);
-      ZX            : Float := Axis.Elements (Vector4s.X) * Axis.Elements (Vector4s.Z);
+      Cos           : constant Float := Trig.Cos (Angle);
+      Sin           : constant Float := Trig.Sin (Angle);
+      One_Minus_Cos : constant Float := 1.0 - Cos;
+      XX            : constant Float := Axis.Elements (Vector4s.X) * Axis.Elements (Vector4s.X);
+      YY            : constant Float := Axis.Elements (Vector4s.Y) * Axis.Elements (Vector4s.Y);
+      ZZ            : constant Float := Axis.Elements (Vector4s.Z) * Axis.Elements (Vector4s.Z);
+      XY            : constant Float := Axis.Elements (Vector4s.X) * Axis.Elements (Vector4s.Y);
+      YZ            : constant Float := Axis.Elements (Vector4s.Y) * Axis.Elements (Vector4s.Z);
+      ZX            : constant Float := Axis.Elements (Vector4s.X) * Axis.Elements (Vector4s.Z);
       Result        : Matrix4 (Components);
    begin
       Result.Elements (Right_Axis_X) := XX + (Cos * (1.0 - XX));
