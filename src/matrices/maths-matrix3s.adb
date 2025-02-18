@@ -2,8 +2,6 @@
 --  This source code is subject to the BSD license, see the LICENCE file in the root of this directory.
 ------------------------------------------------------------------------------------------------------------------------
 with Ada.Numerics.Generic_Elementary_Functions;
-with Ada.Strings.Fixed;
-with Ada.Text_IO;
 
 package body Maths.Matrix3s is
    use type Vector3s.Vector3;
@@ -168,23 +166,6 @@ package body Maths.Matrix3s is
 
 
    procedure Matrix3_Image (Buffer : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class; Arg : Matrix3) is
-      function Convert (F : Float) return String is
-         use Ada.Strings;
-         use Ada.Strings.Fixed;
-         use Ada.Text_IO;
-
-         package FIO is new Float_IO (Float);
-         use FIO;
-
-         Result : String (1 .. 20) := (others => ' ');
-      begin
-         Put (To   => Result,
-              Item => F,
-              Aft  => 4,
-              Exp  => 0);
-
-         return Trim (Result, Both);
-      end Convert;
    begin
       Buffer.Put ("(Right => " & Arg.Axes (Right)'Image &
                   ", Up => " & Arg.Axes (Up)'Image &
