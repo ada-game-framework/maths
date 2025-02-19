@@ -40,6 +40,13 @@ package body Maths.Stacks is
    --     Push (Self, )
    --  end Push;
 
+   procedure Pop (Self : in out Stack) is
+   begin
+      if Self.Current_Top > Natural'First then
+         Self.Current_Top := @ - 1;
+      end if;
+   end Pop;
+
 
    function Pop (Self : in out Stack) return Element_Type is
       Result : Element_Type;

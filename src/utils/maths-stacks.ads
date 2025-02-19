@@ -26,6 +26,7 @@ package Maths.Stacks is
 
    --  procedure Push (Self : in out Stack; New_Top : Reference_Type);
 
+   procedure Pop (Self : in out Stack);
    function Pop (Self : in out Stack) return Element_Type;
 
    function Top (Self : aliased in out Stack) return Reference_Type with
