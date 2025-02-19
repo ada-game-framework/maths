@@ -74,6 +74,8 @@ package Maths.Matrix4s is
      Unchecked_Union,
      Put_Image => Matrix4_Image;
 
+   subtype Matrix4_Array is Matrix4 (Components);
+
    Identity : constant Matrix4;
 
    --  Operators.
