@@ -6,7 +6,8 @@ with Ada.Unchecked_Deallocation;
 package body Maths.Stacks is
    procedure Init (Self : in out Stack; Size : Natural := Capacity) is
    begin
-      Self.Elements := new Element_Array (1 .. Size);
+      Self.Elements         := new Element_Array (1 .. Size);
+      Self.Current_Capacity := Size;
    end Init;
 
 
@@ -18,12 +19,14 @@ package body Maths.Stacks is
 
 
    procedure Push (Self : in out Stack; New_Element : Element_Type) is
-      S       : constant not null access Element_Array := Self.Elements;
+      S       : not null access Element_Array := Self.Elements;
       New_Top : constant Natural := Self.Current_Top + 1;
    begin
       --  Are we about to exceed the size?
-      if New_Top > S'Last then
+      if New_Top > Self.Current_Capacity then
          Resize (Self);
+
+         S := Self.Elements;
       end if;
 
       S (New_Top) := New_Element;

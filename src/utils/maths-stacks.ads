@@ -38,8 +38,9 @@ private
    type Element_Access is access all Element_Array;
 
    type Stack is limited record
-      Elements    : Element_Access := null;
-      Current_Top : Natural        := Natural'First; --  When 0, stack = empty.
+      Elements         : Element_Access := null;
+      Current_Capacity : Natural        := Natural'First;
+      Current_Top      : Natural        := Natural'First; --  When 0, stack = empty.
    end record;
 
    procedure Resize (Self : in out Stack; Increase_By : Natural := Capacity);
